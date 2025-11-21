@@ -1,0 +1,11 @@
+@import "tailwindcss";
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+@layer components {
+  .active > a {
+    @apply bg-gray-300 text-gray-900 font-medium;
+  }
+}
+

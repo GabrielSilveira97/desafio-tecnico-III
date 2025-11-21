@@ -1,0 +1,48 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Paciente {
+  id            String   @id @default(uuid())
+  nome          String
+  documento     String   @unique
+  dataNascimento DateTime
+
+  exames        Exame[]
+}
+
+model Exame {
+  id             String   @id @default(uuid())
+  pacienteId     String
+  idempotencyKey String   @unique
+  modalidade     ModalidadeDICOM
+  dataExame      DateTime
+  descricao      String?
+
+  paciente Paciente @relation(fields: [pacienteId], references: [id])
+}
+
+enum ModalidadeDICOM {
+  CR
+  CT
+  DX
+  MG
+  MR
+  NM
+  OT
+  PT
+  RF
+  US
+  XA
+}
