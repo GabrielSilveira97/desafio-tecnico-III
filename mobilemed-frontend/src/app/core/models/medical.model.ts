@@ -5,10 +5,11 @@ export enum DicomModalidade {
 }
 
 export interface PaginatedResponse<T> {
-  data: T[];       // Ou 'content', dependendo do seu backend
-  total: number;    // Total de registros no banco
-  page: number;     // Página atual
-  limit: number; // Itens por página
+  data: T[];       
+  total: number;   
+  page: number;     
+  pageSize: number;
+  totalPages: number;
 }
 
 export interface Paciente {
@@ -25,4 +26,12 @@ export interface Exame {
   dataExame: string | Date;
   descricao?: string;
   idempotencyKey: string
+}
+
+export interface CreateExameRequest {
+  pacienteId: string;
+  modalidade: DicomModalidade;
+  dataExame: string | Date;
+  descricao?: string;
+  idempotencyKey: string;
 }

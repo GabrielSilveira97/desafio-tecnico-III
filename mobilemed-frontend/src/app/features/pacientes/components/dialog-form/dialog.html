@@ -1,26 +1,59 @@
-<main class="p-10">
-<h2 class="text-xl font-semibold mb-3">Novo Paciente</h2>
-
-<form [formGroup]="form" class="flex flex-col gap-3">
-
-  <mat-form-field >
-    <mat-label>Nome</mat-label>
-    <input matInput formControlName="nome">
-  </mat-form-field>
-
-  <mat-form-field >
-    <mat-label>Documento</mat-label>
-    <input matInput formControlName="documento">
-  </mat-form-field>
-
-  <mat-form-field >
-    <mat-label>Data de Nascimento</mat-label>
-    <input matInput formControlName="dataNascimento" type="date">
-  </mat-form-field>
-
-  <div class="flex justify-end gap-2 mt-2">
-    <button mat-button (click)="fechar()">Cancelar</button>
-    <button mat-flat-button color="primary" (click)="salvar()">Salvar</button>
+<div class="min-w-96">
+  <div class="bg-linear-to-r from-blue-50 to-slate-50 px-6 py-4 border-b border-slate-200">
+    <h2 class="text-2xl font-bold text-slate-800">{{ titulo }}</h2>
+    <p class="text-sm text-slate-500 mt-1">{{ isEditing ? 'Atualize os dados do paciente' : 'Registre um novo paciente' }}</p>
   </div>
-</form>
-</main>
+
+  <form [formGroup]="form" class="flex flex-col gap-4 p-6">
+
+    <mat-form-field  class="w-full">
+      <mat-label>Nome Completo</mat-label>
+      <input matInput formControlName="nome" placeholder="Digite o nome completo">
+      <mat-icon matPrefix class="text-slate-400">person</mat-icon>
+      <mat-error *ngIf="form.get('nome')?.hasError('required')">
+        Nome é obrigatório
+      </mat-error>
+      <mat-error *ngIf="form.get('nome')?.hasError('minlength')">
+        Nome deve ter no mínimo 3 caracteres
+      </mat-error>
+      <mat-error *ngIf="form.get('nome')?.hasError('maxlength')">
+        Nome deve ter no máximo 120 caracteres
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field  class="w-full">
+      <mat-label>Documento</mat-label>
+      <input matInput formControlName="documento" placeholder="CPF, RG, Passaporte, etc">
+      <mat-icon matPrefix class="text-slate-400">badge</mat-icon>
+      <mat-error *ngIf="form.get('documento')?.hasError('required')">
+        Documento é obrigatório
+      </mat-error>
+      <mat-error *ngIf="form.get('documento')?.hasError('minlength')">
+        Documento deve ter no mínimo 5 caracteres
+      </mat-error>
+      <mat-error *ngIf="form.get('documento')?.hasError('maxlength')">
+        Documento deve ter no máximo 30 caracteres
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field  class="w-full">
+      <mat-label>Data de Nascimento</mat-label>
+      <input matInput formControlName="dataNascimento" type="date">
+      <mat-icon matPrefix class="text-slate-400">calendar_today</mat-icon>
+      <mat-error *ngIf="form.get('dataNascimento')?.hasError('required')">
+        Data de nascimento é obrigatória
+      </mat-error>
+    </mat-form-field>
+
+    <div class="flex justify-end gap-3 mt-6">
+      <button mat-stroked-button type="button" (click)="fechar()" class="text-slate-700">
+        <mat-icon class="mr-1">close</mat-icon>
+        Cancelar
+      </button>
+      <button mat-flat-button color="primary" type="button" (click)="salvar()" [disabled]="form.invalid" class="min-w-28">
+        <mat-icon class="mr-1">{{ isEditing ? 'update' : 'save' }}</mat-icon>
+        {{ isEditing ? 'Atualizar' : 'Salvar' }}
+      </button>
+    </div>
+  </form>
+</div>

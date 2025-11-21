@@ -1,0 +1,62 @@
+<div class="min-w-96">
+  <div class="bg-linear-to-r from-blue-50 to-slate-50 px-6 py-4 border-b border-slate-200">
+    <h2 class="text-2xl font-bold text-slate-800">Novo Exame Médico</h2>
+    <p class="text-sm text-slate-500 mt-1">Registre um novo exame de paciente</p>
+  </div>
+
+  <form [formGroup]="form" class="flex flex-col gap-4 p-6">
+
+    <mat-form-field  class="w-full">
+      <mat-label>Data do Exame</mat-label>
+      <input matInput type="date" formControlName="dataExame">
+      <mat-icon matPrefix class="text-slate-400">calendar_today</mat-icon>
+      <mat-error *ngIf="form.get('dataExame')?.hasError('required')">
+        Data do exame é obrigatória
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field  class="w-full">
+      <mat-label>Modalidade</mat-label>
+      <mat-select formControlName="modalidade">
+        <mat-option *ngFor="let m of modalidades" [value]="m">{{ m }}</mat-option>
+      </mat-select>
+      <mat-icon matPrefix class="text-slate-400">medical_services</mat-icon>
+      <mat-error *ngIf="form.get('modalidade')?.hasError('required')">
+        Modalidade é obrigatória
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field  class="w-full">
+      <mat-label>Paciente</mat-label>
+      <input matInput [matAutocomplete]="auto" formControlName="paciente" placeholder="Comece a digitar o nome...">
+      <mat-icon matPrefix class="text-slate-400">person</mat-icon>
+      <mat-autocomplete #auto="matAutocomplete">
+        <mat-option *ngFor="let p of filteredPacientes()" [value]="p.nome" class="py-2">
+          <span class="font-medium">{{ p.nome }}</span>
+          <span class="text-slate-500 ml-2 text-sm">{{ p.documento }}</span>
+        </mat-option>
+      </mat-autocomplete>
+      <mat-error *ngIf="form.get('paciente')?.hasError('required')">
+        Paciente é obrigatório
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field  class="w-full">
+      <mat-label>Descrição (opcional)</mat-label>
+      <textarea matInput formControlName="descricao" placeholder="Adicione observações..." rows="3"></textarea>
+      <mat-icon matPrefix class="text-slate-400 mt-2">note</mat-icon>
+    </mat-form-field>
+
+    <div class="flex justify-end gap-3 mt-3">
+      <button mat-stroked-button type="button" (click)="fechar()" class="text-slate-700">
+        <mat-icon class="mr-1">close</mat-icon>
+        Cancelar
+      </button>
+      <button mat-flat-button color="primary" type="button" (click)="salvar()" [disabled]="form.invalid" class="min-w-28">
+        <mat-icon class="mr-1">save</mat-icon>
+        Salvar
+      </button>
+    </div>
+
+  </form>
+</div>

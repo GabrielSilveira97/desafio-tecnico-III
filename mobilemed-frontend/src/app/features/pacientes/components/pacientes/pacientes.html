@@ -1,33 +1,75 @@
-<main class="flex flex-col items-center md:items-start">
+<main class="flex flex-col">
 
-  <p class="text-2xl">{{title()}}</p>
+  <div class="mb-8">
+    <h1 class="text-3xl font-bold text-slate-800">{{title()}}</h1>
+    <p class="text-sm text-slate-500 mt-1">Gerencie os dados de pacientes</p>
+  </div>
 
-  <section class="w-full flex justify-end">
-        <button mat-flat-button color="primary" (click)="abrirDialogNovoPaciente()">
-    Novo Paciente
-  </button>
+  <section class="w-full flex justify-end mb-6">
+    <button mat-flat-button color="primary" (click)="abrirDialogNovoPaciente()" class="shadow-md hover:shadow-lg transition-shadow">
+      <mat-icon class="mr-2">add</mat-icon>
+      Novo Paciente
+    </button>
   </section>
 
-  <table mat-table [dataSource]="dataSource()" class="my-6 w-full rounded-xl overflow-hidden shadow-md border border-gray-200">
+  <div class="rounded-2xl overflow-hidden shadow-lg border border-slate-100 bg-white">
+  <table mat-table [dataSource]="dataSource()" class="w-full">
 
     <ng-container matColumnDef="nome">
-      <th mat-header-cell *matHeaderCellDef> Nome </th>
-      <td mat-cell *matCellDef="let p"> {{ p.nome }} </td>
+      <th mat-header-cell *matHeaderCellDef class="bg-linear-to-r from-slate-50 to-slate-100 text-slate-700 font-semibold px-6 py-4 text-left"> Nome </th>
+      <td mat-cell *matCellDef="let p" class="px-6 py-4 text-slate-800 font-medium"> {{ p.nome }} </td>
     </ng-container>
 
     <ng-container matColumnDef="documento">
-      <th mat-header-cell *matHeaderCellDef> Documento </th>
-      <td mat-cell *matCellDef="let p"> {{ p.documento }} </td>
+      <th mat-header-cell *matHeaderCellDef class="bg-linear-to-r from-slate-50 to-slate-100 text-slate-700 font-semibold px-6 py-4 text-left"> Documento </th>
+      <td mat-cell *matCellDef="let p" class="px-6 py-4 text-slate-600 font-mono text-sm"> {{ p.documento }} </td>
     </ng-container>
 
     <ng-container matColumnDef="dataNascimento">
-      <th mat-header-cell *matHeaderCellDef> Nascimento </th>
-      <td mat-cell *matCellDef="let p"> {{ formatarData(p.dataNascimento)}} </td>
+      <th mat-header-cell *matHeaderCellDef class="bg-linear-to-r from-slate-50 to-slate-100 text-slate-700 font-semibold px-6 py-4 text-left"> Nascimento </th>
+      <td mat-cell *matCellDef="let p" class="px-6 py-4 text-slate-600 text-sm"> {{ formatarData(p.dataNascimento)}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="acoes">
+      <th mat-header-cell *matHeaderCellDef class="bg-linear-to-r from-slate-50 to-slate-100 text-slate-700 font-semibold px-6 py-4 text-center"> Ações </th>
+      <td mat-cell *matCellDef="let p" class="px-6 py-4 text-center">
+        <button
+          mat-icon-button
+          color="primary"
+          (click)="editarPaciente(p.id)"
+          title="Editar paciente"
+          class="hover:bg-blue-100 transition-colors"
+        >
+          <mat-icon class="text-blue-600">edit</mat-icon>
+        </button>
+
+        <button
+          mat-icon-button
+          color="warn"
+          (click)="excluirPaciente(p.id)"
+          title="Excluir paciente"
+          class="hover:bg-red-100 transition-colors ml-2"
+        >
+          <mat-icon class="text-red-600">delete</mat-icon>
+        </button>
+      </td>
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns" class="border-t border-slate-100 hover:bg-slate-50 transition-colors duration-200"></tr>
 
     </table>
+  </div>
+
+  <mat-paginator
+    [length]="totalPacientes()"
+    [pageSize]="pageSize()"
+    [pageIndex]="page() - 1"
+    [pageSizeOptions]="pageSizeOptions"
+    (page)="onPageChange($event)"
+    aria-label="Selecione a página de pacientes"
+    class="mt-6 rounded-xl bg-slate-50 border border-slate-100"
+  >
+  </mat-paginator>
     
 </main>
