@@ -6,7 +6,7 @@
 ```bash
 cd mobilemed-backend
 npm install
-echo "DATABASE_URL=postgresql://postgres:password@localhost:5432/mobilemed_dev" > .env
+.env => "DATABASE_URL"
 npx prisma migrate dev
 npm run start
 # http://localhost:3000
@@ -36,4 +36,5 @@ GET    /exames?page=1&pageSize=10    # Listar
 ```
 
 ---
+
 
