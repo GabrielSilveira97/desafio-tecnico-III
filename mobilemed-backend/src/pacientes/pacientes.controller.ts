@@ -22,15 +22,15 @@ export class PacientesController {
 
   @Get()
   async getPacientes(@Query() query: QueryPacientesDto) {
-    const { page = 1, limit = 10 } = query;
+    const { page = 1, pageSize = 10 } = query;
 
-    if (page < 1 || limit < 1) {
-      throw new BadRequestException('page e limit devem ser >= 1');
+    if (page < 1 || pageSize < 1) {
+      throw new BadRequestException('page e pageSize devem ser >= 1');
     }
 
     return this.pacientesService.getPacientes({
       page,
-      limit,
+      pageSize,
     });
   }
 

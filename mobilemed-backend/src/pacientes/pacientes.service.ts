@@ -12,14 +12,14 @@ import { UpdatePacienteDto } from './dto/update-paciente.dto';
 export class PacientesService {
   constructor(private prisma: PrismaService) {}
 
-  async getPacientes(params: { page: number; limit: number }) {
-    const { page, limit } = params;
-    const skip = (page - 1) * limit;
+  async getPacientes(params: { page: number; pageSize: number }) {
+    const { page, pageSize } = params;
+    const skip = (page - 1) * pageSize;
 
     const [data, total] = await this.prisma.$transaction([
       this.prisma.paciente.findMany({
         skip,
-        take: limit,
+        take: pageSize,
         orderBy: { nome: 'asc' },
       }),
       this.prisma.paciente.count(),
@@ -29,8 +29,8 @@ export class PacientesService {
       data,
       total,
       page,
-      limit,
-      totalPages: Math.ceil(total / limit),
+      pageSize,
+      totalPages: Math.ceil(total / pageSize),
     };
   }
 

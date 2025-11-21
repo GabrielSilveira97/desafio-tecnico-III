@@ -56,16 +56,16 @@ export class ExamesService {
   }
 
   async getExames(params: QueryExamesDto & { pacienteId?: string }) {
-    const { page, limit, pacienteId } = params;
+    const { page, pageSize, pacienteId } = params;
 
-    const skip = (page - 1) * limit;
+    const skip = (page - 1) * pageSize;
     const where = pacienteId ? { pacienteId } : {};
 
     const [data, total] = await this.prisma.$transaction([
       this.prisma.exame.findMany({
         where,
         skip,
-        take: limit,
+        take: pageSize,
         include: { paciente: true },
         orderBy: { dataExame: 'desc' },
       }),
@@ -76,8 +76,8 @@ export class ExamesService {
       data,
       total,
       page,
-      limit,
-      totalPages: Math.ceil(total / limit),
+      pageSize,
+      totalPages: Math.ceil(total / pageSize),
     };
   }
 }

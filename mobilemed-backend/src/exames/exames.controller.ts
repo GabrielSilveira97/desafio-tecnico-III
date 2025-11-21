@@ -34,7 +34,7 @@ export class ExamesController {
   async getAll(@Query() query: QueryExamesDto) {
     return this.examsService.getExames({
       page: query.page,
-      limit: query.limit,
+      pageSize: query.pageSize,
     });
   }
 }
