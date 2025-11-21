@@ -62,24 +62,29 @@ export class PacientesService {
     }
   }
 
-  async updatePaciente(id: string, data: UpdatePacienteDto) {
-    try {
-      return await this.prisma.paciente.update({
-        where: { id },
-        data,
-      });
-    } catch (error) {
-      if (error.code === 'P2025') {
-        throw new NotFoundException('Paciente não encontrado');
-      }
-      if (error.code === 'P2002') {
-        throw new ConflictException(
-          'Documento já está em uso por outro paciente',
-        );
-      }
-      throw error;
+async updatePaciente(id: string, data: UpdatePacienteDto) {
+  try {
+    const updateData = {
+      ...data,
+      dataNascimento: data.dataNascimento ? new Date(data.dataNascimento) : undefined,
+    };
+
+    return await this.prisma.paciente.update({
+      where: { id },
+      data: updateData,
+    });
+  } catch (error) {
+    if (error.code === 'P2025') {
+      throw new NotFoundException('Paciente não encontrado');
     }
+    if (error.code === 'P2002') {
+      throw new ConflictException(
+        'Documento já está em uso por outro paciente',
+      );
+    }
+    throw error;
   }
+}
 
 async deletePaciente(id: string) {
   const exames = await this.prisma.exame.findFirst({
